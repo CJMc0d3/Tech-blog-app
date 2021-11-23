@@ -2,13 +2,12 @@ const router = require('express').Router();
 const { Post, Comment, User } = require('../models');
 const withAuth = require('../utils/auth');
 
-// get all posts for homepage
+
 router.get('/', async (req, res) => {
   try {
     const postData = await Post.findAll({
       include: [User],
     });
-    // serialize the data
     const posts = postData.map((post) => post.get({ plain: true }));
     res.render('all-posts-admin', { posts, loggedIn: req.session.loggedIn});
   } catch (err) {
@@ -16,7 +15,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// get single post
 router.get('/post/:id', withAuth, async (req, res) => {
   try {
     const postData = await Post.findOne({
