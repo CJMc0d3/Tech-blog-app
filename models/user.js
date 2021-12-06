@@ -1,36 +1,55 @@
-const User = require('./User');
-const Post = require('./Post');
-const Comment = require('./Comment');
+const { Model, DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt");
+const sequelize = require("../config/connection");
 
-User.hasMany(Post, {
-  foreignKey: 'userId',
-  onDelete: 'CASCADE'
-});
+class User extends Model {
+  checkPassword(loginPassword) {
+    return bcrypt.compareSync(loginPassword, this.password);
+  }
+}
 
-User.hasMany(Comment, {
-  foreignKey: 'userId',
-  onDelete: 'CASCADE'
-});
+User.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    user_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [8],
+      },
+    },
+  },
+  {
+    hooks: {
+      beforeCreate: async (newUserData) => {
+        newUserData.password = await bcrypt.hash(newUserData.password, 10);
+        return newUserData;
+      },
+      beforeUpdate: async (updateUserData) => {
+        if (updateUserData.password) {
+          updateUserData.password = await bcrypt.hash(
+            updateUserData.password,
+            10
+          );
+        }
+        return updateUserData;
+      },
+    },
+    sequelize,
+    timestamps: true,
+    freezeTableName: true,
+    underscored: true,
+    modelName: "user",
+  }
+);
 
-Post.belongsTo(User, {
-  foreignKey: 'userId',
-  onDelete: 'CASCADE'
-});
-
-Post.hasMany(Comment, {
-  foreignKey: 'postId',
-  onDelete: 'CASCADE'
-});
-
-Comment.belongsTo(User, {
-  foreignKey: 'userId',
-});
-
-Comment.belongsTo(Post, {
-  foreignKey: 'postId'
-});
-module.exports = {
-  User,
-  Comment,
-  Post
-};
+module.exports = User;

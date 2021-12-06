@@ -1,25 +1,22 @@
-const loginFormHandler = async function(event) {
+const newFormHandler = async function(event) {
   event.preventDefault();
 
-  const usernameEl = document.querySelector('#username-input-login');
-  const passwordEl = document.querySelector('#password-input-login');
+  const postTitle = document.querySelector('input[name="post-title"]').value;
+  const postContent = document.querySelector('textarea[name="post-body"]').value;
 
-  const response = await fetch('/api/user/login', {
+  console.log(postTitle);
+  console.log(postContent);
+
+  await fetch(`/api/post`, {
     method: 'POST',
     body: JSON.stringify({
-      username: usernameEl.value,
-      password: passwordEl.value,
+      postTitle,
+      postContent,
     }),
     headers: { 'Content-Type': 'application/json' },
   });
-
-  if (response.ok) {
-    document.location.replace('/dashboard');
-  } else {
-    alert('Failed to login');
-  }
 };
 
 document
-  .querySelector('.login-form')
-  .addEventListener('submit', loginFormHandler);
+  .querySelector('#new-post-form')
+  .addEventListener('submit', newFormHandler);

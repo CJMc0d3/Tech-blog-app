@@ -1,46 +1,47 @@
-const newFormHandler = async (event) => {
-    event.preventDefault();
+const postId = document.querySelector('input[name="post-id"]').value;
+console.log("testing");
+console.log(postId);
 
-    const title = document.querySelector('#post-title').value.trim();
-    const input = document.querySelector('#post-input').value.trim();
+const editFormHandler = async (event) => {
+  event.preventDefault();
 
-    if (title && input) {
-        const response = await fetch('/api/posts', {
-            method: 'POST',
-            body: JSON.stringify({ title, input }),
-            headers: {
-                'Input-Type': 'application/json',
-            },
-        });
+  const postTitle = document.querySelector('input[name="post-title"]').value;
+  const postContent = document.querySelector('textarea[name="post-body"]').value;
 
-        if (response.ok) {
-            document.location.replace('/dashboard');
-        } else {
-            alert('Failed to create post');
-        }
+  console.log(postTitle);
+  console.log(postContent);
+
+  const response = await fetch(`/api/post/${postId}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+      postTitle,
+      postContent,
+    }),
+    headers: {
+      'Content-Type': 'application/json'
     }
+  });
+
+  console.log(response);
+  if (response.ok) {
+    document.location.replace('/dashboard');
+  } else {
+    alert('Failed to update your post');
+  }
+  document.location.replace('/dashboard');
 };
 
-const delButtonHandler = async (event) => {
-    if(event.target.hasAttribute('data-id')) {
-        const id = event.target.getAttribute('data-id');
+const deleteClickHandler = async () => {
+  await fetch(`/api/post/${postId}`, {
+    method: 'DELETE'
+  });
 
-        const response = await fetch(`/api/posts/${id}`, {
-            method: 'DELETE',
-        });
-
-        if (response.ok) {
-            document.location.replace('/dashboard');
-        } else {
-            alert('Failed to delete post');
-        }
-    }
+  document.location.replace('/dashboard');
 };
 
 document
-    .querySelector('.new-post-form')
-    .addEventListener('submit', delButtonHandler);
-
+  .querySelector('#edit-post-form')
+  .addEventListener('submit', editFormHandler);
 document
-    .querySelector('.post-list')
-    .addEventListener('click', delButtonHandler);
+  .querySelector('#delete-btn')
+  .addEventListener('click', deleteClickHandler);
