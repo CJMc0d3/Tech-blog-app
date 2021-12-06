@@ -1,5 +1,5 @@
 {
-  "name": "tech-blog",
+  "name": "tech-blog-app",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -8,9 +8,16 @@
     "start": "node server.js",
     "seed": "node seeds/index.js"
   },
-  "keywords": [],
-  "author": "Cameron McDougall",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CJMc0d3/tech-blog-app.git"
+  },
+  "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CJMc0d3/tech-blog-app/issues"
+  },
+  "homepage": "https://github.com/CJMc0d3/tech-blog-app#readme",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "connect-session-sequelize": "^7.1.2",
@@ -19,7 +26,6 @@
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
     "mysql2": "^2.3.2",
-    "sequelize": "^6.9.0",
-    "node": "14.18.1"
+    "sequelize": "^6.9.0"
   }
 }
