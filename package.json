@@ -9,7 +9,7 @@
     "seed": "node seeds/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cameron McDougall",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
@@ -19,6 +19,7 @@
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
     "mysql2": "^2.3.2",
-    "sequelize": "^6.9.0"
+    "sequelize": "^6.9.0",
+    "node": "14.18.1"
   }
 }
